@@ -9,7 +9,7 @@ const formsRouter = require('./src/routes/forms');
 require('./src/models');
 
 const app = express();
-const PORT = process.env.PORT; // Use PORT from .env or provided by Render
+const PORT = process.env.PORT; 
 
 // Middleware
 app.use(cors());
