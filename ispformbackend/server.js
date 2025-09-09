@@ -9,7 +9,8 @@ const formsRouter = require('./src/routes/forms');
 require('./src/models');
 
 const app = express();
-const PORT = process.env.PORT; 
+const PORT = process.env.PORT || 5000;
+
 
 // Middleware
 app.use(cors());
