@@ -1,0 +1,18 @@
+# Ignore node_modules only
+ispformfrontend/node_modules/
+ispformbackend/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env files
+*.env
+
+# Build outputs
+ispformfrontend/dist/
+ispformbackend/dist/
+
+# System files
+.DS_Store
+Thumbs.db

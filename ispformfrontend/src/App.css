@@ -1,0 +1,640 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.4;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.form-container, .form-view-container {
+  max-width: 210mm;
+  margin: 20px auto;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Form Header */
+.form-header {
+  text-align: center;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #333;
+
+}
+
+.form-header h1 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.company-info {
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+.company-info p {
+  margin: 2px 0;
+  margin-right: 20px;
+}
+
+.form-info {
+margin-right:36px;
+  font-size: 12px;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 25px;
+  page-break-inside: avoid;
+}
+
+.form-section h2 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+}
+
+.office-section h2 {
+  background-color: #e8e8e8;
+}
+
+/* Tables */
+.form-table, .view-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+
+.form-table td, .view-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  vertical-align: top;
+}
+
+.label-cell {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  width: 30%;
+  min-width: 120px;
+}
+
+.input-cell, .value-cell {
+  background-color: white;
+  width: 70%;
+}
+
+/* Form Inputs */
+.input-cell input,
+.input-cell select,
+.input-cell textarea {
+  width: 100%;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.input-cell input:focus,
+.input-cell select:focus,
+.input-cell textarea:focus {
+  outline: 1px solid #007bff;
+  background-color: #f8f9fa;
+}
+
+/* Checkbox and Radio Buttons */
+.checkbox-cell {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.checkbox-label input[type="radio"],
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin-right: 5px;
+  transform: scale(1.2);
+}
+
+.checkbox-text {
+  font-size: 12px;
+}
+
+/* GPS Coordinates */
+.gps-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.gps-input {
+  width: 120px !important;
+  flex-shrink: 0;
+}
+
+/* Declaration Section */
+.declaration-content {
+  padding: 10px;
+}
+
+.declaration-text {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.declaration-text-view {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.signature-section {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signature-label {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.signature-date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.signature-date input {
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.no-signature {
+  padding: 20px;
+  text-align: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+  font-style: italic;
+}
+
+.required {
+  color: red;
+}
+
+/* Submit Button */
+.submit-section {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.submit-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.back-button,
+.back-link {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover,
+.back-link:hover {
+  background-color: #545b62;
+}
+
+.top-buttons {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+}
+
+.print-button {
+  background-color: #28a745 !important;
+}
+
+.print-button:hover {
+  background-color: #1e7e34 !important;
+}
+
+/* Loading and Error States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container {
+  text-align: center;
+  padding: 40px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+.error-container h2 {
+  margin-bottom: 15px;
+  color: #721c24;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    font-size: 10pt;
+    background: white;
+  }
+  
+  .form-container,
+  .form-view-container {
+    max-width: none;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  
+  .action-buttons {
+    display: none;
+  }
+  
+  .submit-section {
+    display: none;
+  }
+  
+  .form-section {
+    page-break-inside: avoid;
+    margin-bottom: 15px;
+  }
+  
+  .form-table td,
+  .view-table td {
+    padding: 4px 6px;
+  }
+  
+  .signature-canvas {
+    max-width: 200px;
+    height: auto;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .form-container,
+  .form-view-container {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .form-header h1 {
+    font-size: 16px;
+  }
+  
+  .company-info {
+    font-size: 11px;
+  }
+  
+  .form-table,
+  .view-table {
+    font-size: 11px;
+  }
+  
+  .checkbox-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .gps-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .gps-input {
+    width: 100% !important;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .signature-canvas {
+    max-width: 100%;
+  }
+}
+
+/* Responsive Table for Mobile */
+@media (max-width: 600px) {
+  .form-table,
+  .view-table {
+    display: block;
+    width: 100%;
+  }
+  
+  .form-table tbody,
+  .view-table tbody {
+    display: block;
+    width: 100%;
+  }
+  
+  .form-table tr,
+  .view-table tr {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .form-table td,
+  .view-table td {
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .label-cell {
+    font-weight: bold;
+    background-color: #f5f5f5;
+    padding: 6px 8px 2px 8px;
+  }
+  
+  .input-cell,
+  .value-cell {
+    padding: 2px 8px 6px 8px;
+  }
+}
+
+/* Additional Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.p-10 {
+  padding: 10px;
+}
+
+/* Signature Canvas Specific Styles */
+.signature-canvas-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 10px 0;
+}
+
+.signature-canvas {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.clear-signature-btn {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.clear-signature-btn:hover {
+  background-color: #c82333;
+}
+
+/* Form Validation Styles */
+.input-error {
+  border: 1px solid #dc3545 !important;
+  background-color: #fff5f5 !important;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 11px;
+  margin-top: 4px;
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Success Message */
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Warning Message */
+.warning-message {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 15px;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Focus States */
+.form-table input:focus,
+.form-table select:focus,
+.form-table textarea:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 1px;
+}
+
+/* Accessibility Improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* Add to your existing App.css */
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  text-align: center;
+  padding: 20px;
+}
+
+.loading-container h2 {
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.error-container h2 {
+  color: #dc3545;
+  margin-bottom: 10px;
+}
+
+.back-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+}
+
+.header-content {
+  display: flex;
+  align-items: flex-start;
+ 
+  margin-bottom: 5px;
+}
+
+.company-logo {
+  width: 120px;
+  height: auto;
+  flex-shrink: 0;
+  margin-top:5px;
+  margin-left:10px;
+}
+
+.header-text {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .company-logo {
+    width: 100px;
+  }
+}
