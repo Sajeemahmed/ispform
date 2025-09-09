@@ -1,3 +1,4 @@
+require('dotenv').config(); // Load environment variables
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -8,11 +9,11 @@ const formsRouter = require('./src/routes/forms');
 require('./src/models');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT; // Use PORT from .env or provided by Render
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json({ limit: '10mb' })); // Increased limit for base64 signatures
+app.use(bodyParser.json({ limit: '10mb' })); // For base64 signatures
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
@@ -51,11 +52,10 @@ const startServer = async () => {
     // Test database connection
     await sequelize.authenticate();
     console.log('✅ Database connection established successfully.');
-    
-    // Sync models (uncomment if you want to create tables automatically)
+
+    // Uncomment the following line if you want to automatically sync models
     // await sequelize.sync({ alter: true });
-    // console.log('✅ Database models synchronized.');
-    
+
     // Start server
     app.listen(PORT, () => {
       console.log(`🚀 Server is running on port ${PORT}`);
