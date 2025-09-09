@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// Use environment variable for base URL
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -34,20 +35,13 @@ api.interceptors.response.use(
 
 export const formAPI = {
   // Submit form
-  submitForm: (formData) => {
-    return api.post('/forms', formData);
-  },
+  submitForm: (formData) => api.post('/forms', formData),
 
   // Get form by unique ID
-  getForm: (uniqueId) => {
-    return api.get(`/forms/${uniqueId}`);
-  },
-
+  getForm: (uniqueId) => api.get(`/forms/${uniqueId}`),
 
   // Health check
-  healthCheck: () => {
-    return api.get('/health');
-  }
+  healthCheck: () => api.get('/health'),
 };
 
 export default api;
