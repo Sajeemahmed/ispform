@@ -1,7 +1,7 @@
 // FormView.jsx - Simplified component without router dependencies
 import React from 'react';
 import SignatureCanvas from './SignatureCanvas';
-
+import logo from '../assets/wavesnet.png';
 const FormView = ({ formData, onBackToForm }) => {
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -34,7 +34,7 @@ const FormView = ({ formData, onBackToForm }) => {
     <div className="form-header">
   <div className="header-content">
     <img 
-      src="/src/assets/wavesnet.png" 
+      src={logo} 
       alt="WavesNett Logo" 
       className="company-logo"
     />

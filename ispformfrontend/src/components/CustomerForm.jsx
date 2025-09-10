@@ -1,7 +1,7 @@
 // CustomerForm.jsx - Complete file
 import React, { useState, useEffect } from 'react';
 import SignatureCanvas from './SignatureCanvas';
-
+import logo from '../assets/wavesnet.png';
 // Constants defined inline to avoid import issues
 const GENDER_OPTIONS = [
   { value: 'MALE', label: 'Male' },
@@ -276,7 +276,7 @@ const handleSubmit = async (e) => {
      <div className="form-header">
   <div className="header-content">
     <img 
-      src="/src/assets/wavesnet.png" 
+      src={logo} 
       alt="WavesNett Logo" 
       className="company-logo"
     />
