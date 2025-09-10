@@ -804,7 +804,7 @@ const handleSubmit = async (e) => {
           <table className="form-table">
             <tbody>
               <tr>
-                <td className="label-cell">CAF No.</td>
+                <td className="label-cell">Customer ID</td>
                 <td className="input-cell">
                   <input
                     type="text"
