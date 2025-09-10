@@ -55,7 +55,7 @@ const startServer = async () => {
     console.log('✅ Database connection established successfully.');
 
     // Uncomment the following line if you want to automatically sync models
-    // await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: true });
 
     // Start server
     app.listen(PORT, () => {
