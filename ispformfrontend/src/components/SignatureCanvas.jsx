@@ -1,66 +1,27 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from "react";
 
 const SignatureCanvas = ({ onSignatureChange, signatureData, disabled = false }) => {
   const canvasRef = useRef(null);
-  const containerRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
-  const [hasDrawn, setHasDrawn] = useState(false);
+  const [strokes, setStrokes] = useState([]);
 
-  // Initialize canvas
-  const initCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    
-    // Set canvas size based on display size
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    
-    ctx.scale(dpr, dpr);
-    
-    // Set canvas background
-    ctx.fillStyle = disabled ? '#f5f5f5' : 'white';
-    ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-    
-    // Set drawing properties
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.strokeStyle = 'black';
-    
-    // Load existing signature if provided
-    if (signatureData && signatureData !== '') {
-      const img = new Image();
-      img.onload = () => {
-        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-        ctx.fillStyle = disabled ? '#f5f5f5' : 'white';
-        ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-        ctx.drawImage(img, 0, 0, canvas.width / dpr, canvas.height / dpr);
-        setHasDrawn(true);
-      };
-      img.src = signatureData;
-    }
-  }, [signatureData, disabled]);
-
+  // initialize canvas
   useEffect(() => {
-    initCanvas();
-  }, [initCanvas]);
-
-  // Get coordinates relative to canvas
-  const getCoordinates = useCallback((e) => {
     const canvas = canvasRef.current;
-    if (!canvas) return { x: 0, y: 0 };
-    
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = disabled ? "#f5f5f5" : "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "black";
+  }, [disabled]);
+
+  // get cursor position
+  const getCoordinates = useCallback((e) => {
+    const rect = canvasRef.current.getBoundingClientRect();
     let clientX, clientY;
-    
     if (e.touches && e.touches.length > 0) {
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
@@ -68,189 +29,138 @@ const SignatureCanvas = ({ onSignatureChange, signatureData, disabled = false })
       clientX = e.clientX;
       clientY = e.clientY;
     }
-    
-    return {
-      x: (clientX - rect.left) * (canvas.width / dpr / rect.width),
-      y: (clientY - rect.top) * (canvas.height / dpr / rect.height)
-    };
+    return { x: clientX - rect.left, y: clientY - rect.top };
   }, []);
 
-  // Start drawing
-  const startDrawing = useCallback((e) => {
-    if (disabled) return;
-    
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    const coords = getCoordinates(e);
-    
-    setIsDrawing(true);
-    setLastPosition(coords);
-    setHasDrawn(true);
-    
-    ctx.beginPath();
-    ctx.moveTo(coords.x, coords.y);
-    
-    // Add a small dot for single clicks
-    ctx.arc(coords.x, coords.y, 1, 0, 2 * Math.PI);
-    ctx.fill();
-  }, [disabled, getCoordinates]);
+  // start drawing
+  const startDrawing = useCallback(
+    (e) => {
+      if (disabled) return;
+      e.preventDefault();
+      const coords = getCoordinates(e);
+      setIsDrawing(true);
+      setLastPosition(coords);
+      setStrokes((prev) => [...prev, [coords]]);
+    },
+    [disabled, getCoordinates]
+  );
 
-  // Draw line
-  const draw = useCallback((e) => {
-    if (!isDrawing || disabled) return;
-    
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    const coords = getCoordinates(e);
-    
-    // Draw line from last position to current position
-    ctx.beginPath();
-    ctx.moveTo(lastPosition.x, lastPosition.y);
-    ctx.lineTo(coords.x, coords.y);
-    ctx.stroke();
-    
-    setLastPosition(coords);
-  }, [isDrawing, disabled, lastPosition, getCoordinates]);
+  // draw on canvas
+  const draw = useCallback(
+    (e) => {
+      if (!isDrawing || disabled) return;
+      e.preventDefault();
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      const coords = getCoordinates(e);
 
-  // Stop drawing
-  const stopDrawing = useCallback((e) => {
-    if (!isDrawing || disabled) return;
-    
-    e?.preventDefault();
-    e?.stopPropagation();
-    
+      ctx.beginPath();
+      ctx.moveTo(lastPosition.x, lastPosition.y);
+      ctx.lineTo(coords.x, coords.y);
+      ctx.stroke();
+
+      setLastPosition(coords);
+
+      setStrokes((prev) => {
+        const newStrokes = [...prev];
+        newStrokes[newStrokes.length - 1] = [
+          ...newStrokes[newStrokes.length - 1],
+          coords,
+        ];
+        return newStrokes;
+      });
+    },
+    [isDrawing, disabled, lastPosition, getCoordinates]
+  );
+
+  // stop drawing
+  const stopDrawing = useCallback(() => {
     setIsDrawing(false);
-    
-    // Save signature data
-    const canvas = canvasRef.current;
-    if (canvas && onSignatureChange) {
-      const dataURL = canvas.toDataURL('image/png');
-      onSignatureChange(dataURL);
-    }
-  }, [isDrawing, disabled, onSignatureChange]);
-
-  // Clear signature
-  const clearSignature = useCallback(() => {
-    if (disabled) return;
-    
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-    
-    setHasDrawn(false);
-    
     if (onSignatureChange) {
-      onSignatureChange('');
+      onSignatureChange(canvasRef.current.toDataURL("image/png"));
     }
-  }, [disabled, onSignatureChange]);
+  }, [onSignatureChange]);
 
-  // Mouse events
-  const handleMouseDown = useCallback((e) => startDrawing(e), [startDrawing]);
-  const handleMouseMove = useCallback((e) => draw(e), [draw]);
-  const handleMouseUp = useCallback((e) => stopDrawing(e), [stopDrawing]);
-  const handleMouseLeave = useCallback((e) => stopDrawing(e), [stopDrawing]);
+  // redraw all strokes
+  const redraw = useCallback(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = disabled ? "#f5f5f5" : "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "black";
 
-  // Touch events
-  const handleTouchStart = useCallback((e) => {
-    if (e.touches.length === 1) { // Only single touch
-      startDrawing(e);
-    }
-  }, [startDrawing]);
-  
-  const handleTouchMove = useCallback((e) => {
-    if (e.touches.length === 1) { // Only single touch
-      draw(e);
-    }
-  }, [draw]);
-  
-  const handleTouchEnd = useCallback((e) => {
-    stopDrawing(e);
-  }, [stopDrawing]);
+    strokes.forEach((stroke) => {
+      ctx.beginPath();
+      ctx.moveTo(stroke[0].x, stroke[0].y);
+      stroke.forEach((point) => ctx.lineTo(point.x, point.y));
+      ctx.stroke();
+    });
+  }, [strokes, disabled]);
+
+  useEffect(() => {
+    redraw();
+  }, [strokes, redraw]);
+
+  // undo last stroke
+  const undoLastStroke = () => {
+    if (disabled || strokes.length === 0) return;
+    setStrokes((prev) => prev.slice(0, -1));
+  };
+
+  // clear all strokes
+  const clearSignature = () => {
+    if (disabled) return;
+    setStrokes([]);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = disabled ? "#f5f5f5" : "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (onSignatureChange) onSignatureChange("");
+  };
 
   return (
-    <div className="signature-canvas-wrapper">
-      <div 
-        ref={containerRef}
-        className="signature-canvas-container"
-        style={{ 
-          position: 'relative',
-          display: 'block',
-          width: 'fit-content'
-        }}
-      >
-        <canvas
-          ref={canvasRef}
-          width="400"
-          height="150"
-          className="signature-canvas"
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          style={{
-            cursor: disabled ? 'default' : 'crosshair',
-            backgroundColor: disabled ? '#f5f5f5' : 'white',
-            border: '2px solid #e5e7eb',
-            borderRadius: '12px',
-            touchAction: 'none',
-            boxShadow: disabled 
-              ? '0 1px 3px rgba(0, 0, 0, 0.1)' 
-              : '0 2px 4px rgba(0, 0, 0, 0.05)',
-            display: 'block',
-            maxWidth: '100%',
-            height: 'auto',
-            width: '100%'
-          }}
-        />
- 
-      </div>
-      {!disabled && (
+    <div className="signature-canvas-container">
+      <canvas
+        ref={canvasRef}
+        width={400}
+        height={150}
+        className="signature-canvas"
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={stopDrawing}
+        onMouseLeave={stopDrawing}
+        onTouchStart={startDrawing}
+        onTouchMove={draw}
+        onTouchEnd={stopDrawing}
+      />
+      <div className="signature-buttons">
         <button
           type="button"
-          onClick={clearSignature}
-          className="clear-signature-btn"
-          style={{
-            marginTop: '12px',
-            padding: '10px 20px',
-            backgroundColor: '#dc2626',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '600',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            transition: 'all 0.2s ease',
-            boxShadow: '0 2px 4px rgba(220, 38, 38, 0.3)',
-          }}
+          className="signature-btn undo-btn"
+          onClick={undoLastStroke}
+          disabled={disabled || strokes.length === 0}
         >
-          <span style={{ fontSize: '14px' }}>🗑️</span>
-          Clear Signature
+          <span className="btn-icon">↶</span>
+          Undo
         </button>
-      )}
+
+        <button
+          type="button"
+          className="signature-btn clear-btn"
+          onClick={clearSignature}
+          disabled={disabled}
+        >
+          <span className="btn-icon"><i class="fa-solid fa-trash"></i></span>
+          Clear
+        </button>
+      </div>
     </div>
   );
 };
 
-export default SignatureCanvas;
+export default SignatureCanvas; 
